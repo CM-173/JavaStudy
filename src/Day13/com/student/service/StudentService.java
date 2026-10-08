@@ -4,6 +4,7 @@ import Day13.com.student.dao.StudentDAO;
 import Day13.com.student.entity.Student;
 
 import java.util.List;
+import java.sql.SQLException;
 
 public class StudentService {
 
@@ -14,7 +15,7 @@ public class StudentService {
     }
 
     // 添加学生
-    public boolean addStudent(Student student) throws Exception {
+    public boolean addStudent(Student student) throws SQLException {
         if (student == null) {
             throw new IllegalArgumentException("学生信息不能为空！");
         }
@@ -35,22 +36,22 @@ public class StudentService {
     }
 
     // 查询所有学生
-    public List<Student> findAllStudents() throws Exception {
+    public List<Student> findAllStudents() throws SQLException {
         return studentDAO.findAll();
     }
 
     // 根据学号查询学生
-    public Student findStudentById(String id) throws Exception {
+    public Student findStudentById(String id) throws SQLException {
         return studentDAO.findById(id);
     }
 
     // 修改学生
-    public boolean updateStudent(Student student) throws Exception {
+    public boolean updateStudent(Student student) throws SQLException {
         return studentDAO.update(student);
     }
 
     // 删除学生
-    public boolean deleteStudent(String id) throws Exception {
+    public boolean deleteStudent(String id) throws SQLException {
         return studentDAO.delete(id);
     }
 }

@@ -8,12 +8,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.SQLException;
 
 public class StudentDAOImpl implements StudentDAO {
 
     //查询所有学生
     @Override
-    public List<Student> findAll() throws Exception {
+    public List<Student> findAll() throws SQLException {
         List<Student> students = new ArrayList<>();
 
         String sql = "SELECT id, name, age FROM student";
@@ -37,7 +38,7 @@ public class StudentDAOImpl implements StudentDAO {
 
     //添加学生
     @Override
-    public boolean save(Student student) throws Exception {
+    public boolean save(Student student) throws SQLException {
         String sql = "INSERT INTO student (id, name, age) VALUES (?, ?, ?)";
 
         try (Connection connection = JDBCUtil.getConnection();
@@ -53,7 +54,7 @@ public class StudentDAOImpl implements StudentDAO {
 
     //根据学号查询
     @Override
-    public Student findById(String id) throws Exception {
+    public Student findById(String id) throws SQLException {
         String sql = "SELECT id, name, age FROM student WHERE id = ?";
 
         try (Connection connection = JDBCUtil.getConnection();
@@ -76,7 +77,7 @@ public class StudentDAOImpl implements StudentDAO {
 
     //修改学生
     @Override
-    public boolean update(Student student) throws Exception {
+    public boolean update(Student student) throws SQLException {
         String sql = "UPDATE student SET name = ?, age = ? WHERE id = ?";
 
         try (Connection connection = JDBCUtil.getConnection();
@@ -92,7 +93,7 @@ public class StudentDAOImpl implements StudentDAO {
 
     //删除学生
     @Override
-    public boolean delete(String id) throws Exception {
+    public boolean delete(String id) throws SQLException {
         String sql = "DELETE FROM student WHERE id = ?";
 
         try (Connection connection = JDBCUtil.getConnection();
