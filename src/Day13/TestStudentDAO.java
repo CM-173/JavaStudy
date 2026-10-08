@@ -16,7 +16,7 @@ public class TestStudentDAO {
         StudentService studentService = new StudentService(studentDAO);
 
         try {
-            Student student = new Student("T005", "测试学生小刘", 20);
+            Student student = new Student("T006", "测试学生小刘", 20);
 
             boolean result = studentService.addStudent(student);
 

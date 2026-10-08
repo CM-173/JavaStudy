@@ -1,19 +1,41 @@
 package Day13.com.student.util;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class JDBCUtil {
+    private static final HikariDataSource DATA_SOURCE;
+    static {
+        try {
+            Properties properties = new Properties();
 
-    private static final String URL =
-            "jdbc:mysql://localhost:3306/student_db";
+            InputStream inputStream = JDBCUtil.class.getClassLoader().getResourceAsStream("db.properties");
 
-    private static final String USER = "root";
+            properties.load(inputStream);
 
-    private static final String PASSWORD = "123456";
+            HikariConfig config = new HikariConfig();
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+            config.setJdbcUrl(
+                    properties.getProperty("jdbc.url")
+            );
+            config.setUsername(
+                    properties.getProperty("jdbc.username")
+            );
+            config.setPassword(
+                    properties.getProperty("jdbc.password")
+            );
+            DATA_SOURCE = new HikariDataSource(config);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static Connection getConnection()
+            throws SQLException {
+        return DATA_SOURCE.getConnection();
     }
 }
