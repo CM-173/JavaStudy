@@ -52,6 +52,22 @@ public class StudentDAOImpl implements StudentDAO {
         }
     }
 
+    @Override
+    public boolean save(Student student, Connection connection) throws SQLException {
+
+        String sql = "insert into student(id,name,age) values(?,?,?)";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, student.getId());
+            statement.setString(2, student.getName());
+            statement.setInt(3, student.getAge());
+
+            return statement.executeUpdate() > 0;
+
+        }
+    }
+
     //根据学号查询
     @Override
     public Student findById(String id) throws SQLException {
