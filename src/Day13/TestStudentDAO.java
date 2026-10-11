@@ -36,14 +36,15 @@ public class TestStudentDAO {
         // 测试事务新增
 
         Student s1 = new Student(
-                "T008",
-                "事务测试1",
+                "T010",
+                "Thread测试1",
                 20
         );
 
+
         Student s2 = new Student(
-                "T008",
-                "事务测试失败",
+                "T010",
+                "故意失败",
                 21
         );
 

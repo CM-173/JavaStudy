@@ -2,6 +2,7 @@ package Day13.com.student.dao;
 
 import Day13.com.student.entity.Student;
 import Day13.com.student.util.JDBCUtil;
+import Day13.com.student.util.TransactionManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -65,6 +66,24 @@ public class StudentDAOImpl implements StudentDAO {
 
             return statement.executeUpdate() > 0;
 
+        }
+    }
+
+    @Override
+    public boolean saveWithTransaction(Student student) throws SQLException {
+        Connection connection = TransactionManager.getConnection();
+
+        String sql = "INSERT INTO student (id, name, age) VALUES (?, ?, ?)";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, student.getId());
+
+            statement.setString(2, student.getName());
+
+            statement.setInt(3, student.getAge());
+
+            return statement.executeUpdate() > 0;
         }
     }
 

@@ -2,11 +2,12 @@ package Day13.com.student.service;
 
 import Day13.com.student.dao.StudentDAO;
 import Day13.com.student.entity.Student;
+import Day13.com.student.util.TransactionManager;
 
+import java.sql.Connection;
 import java.util.List;
 import java.sql.SQLException;
 import Day13.com.student.util.JDBCUtil;
-import java.sql.Connection;
 
 public class StudentService {
 
@@ -61,47 +62,48 @@ public class StudentService {
             Student student1,
             Student student2) throws SQLException {
 
-        Connection connection = null;
 
         try {
-            // 获取连接
-            connection = JDBCUtil.getConnection();
 
-            // 关闭自动提交
-            connection.setAutoCommit(false);
+            TransactionManager.begin();
 
-            // 第一次新增
-            boolean result1 = studentDAO.save(student1, connection);
 
-            // 第二次新增
-            boolean result2 = studentDAO.save(student2, connection);
+            boolean result1 =
+                    studentDAO.saveWithTransaction(student1);
 
-            if (result1 && result2) {
-                // 两次都成功
-                connection.commit();
+
+            boolean result2 =
+                    studentDAO.saveWithTransaction(student2);
+
+
+
+            if(result1 && result2){
+
+                TransactionManager.commit();
+
                 return true;
-            } else {
-                // 有一次失败
-                connection.rollback();
+
+            }else{
+
+                TransactionManager.rollback();
+
                 return false;
+
             }
 
-        } catch (Exception e) {
-            try {
-                if (connection != null) {
-                    connection.rollback();
-                }
-                System.out.println("事务失败，已回滚！");
 
-            } catch (SQLException rollbackException) {
-                rollbackException.printStackTrace();
-            }
+        } catch(Exception e){
+
+            TransactionManager.rollback();
+
             return false;
 
+
         } finally {
-            if (connection != null) {
-                connection.close();
-            }
+
+            TransactionManager.close();
+
         }
+
     }
 }

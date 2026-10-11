@@ -13,6 +13,10 @@ public interface StudentDAO {
 
     boolean save(Student student, Connection connection) throws SQLException;
 
+    // 使用当前事务连接新增
+    boolean saveWithTransaction(Student student)
+            throws SQLException;
+
     // 查询所有学生
     List<Student> findAll() throws SQLException;
 
