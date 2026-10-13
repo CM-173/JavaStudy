@@ -39,4 +39,19 @@
         DELETE FROM student
         WHERE id=#{id}
     </delete>
+
+    <select id="search"
+            resultType="Day13.com.student.entity.Student">
+        SELECT *
+        FROM student
+        <where>
+            <if test="name != null and name != ''">
+                AND name=#{name}
+            </if>
+
+            <if test="age != null">
+                AND age=#{age}
+            </if>
+        </where>
+    </select>
 </mapper>
