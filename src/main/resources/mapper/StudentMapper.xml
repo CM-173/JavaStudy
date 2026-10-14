@@ -1,57 +1,109 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Day13.com.student.mapper.StudentMapper">
-    <!-- 根据id查询 -->
+
+    <!-- 学生+班级映射（一对一） -->
+    <resultMap id="studentWithClassMap"
+               type="Day13.com.student.entity.Student">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <association property="clazz"
+                     javaType="Day13.com.student.entity.Class">
+            <id property="id" column="class_id"/>
+            <result property="className" column="class_name"/>
+        </association>
+    </resultMap>
+
+    <!-- 班级+学生列表映射（一对多） -->
+    <resultMap id="classWithStudentsMap"
+               type="Day13.com.student.entity.Class">
+        <id property="id" column="class_id"/>
+        <result property="className" column="class_name"/>
+        <collection property="students"
+                    ofType="Day13.com.student.entity.Student">
+            <id property="id" column="student_id"/>
+            <result property="name" column="student_name"/>
+            <result property="age" column="student_age"/>
+        </collection>
+    </resultMap>
+
+    <!-- 根据id查询学生 -->
     <select id="findById"
             resultType="Day13.com.student.entity.Student">
-        SELECT id,name,age
+        SELECT id, name, age
         FROM student
-        WHERE id=#{id}
+        WHERE id = #{id}
     </select>
 
-    <!-- 查询所有 -->
+    <!-- 查询所有学生 -->
     <select id="findAll"
             resultType="Day13.com.student.entity.Student">
-        SELECT id,name,age
+        SELECT id, name, age
         FROM student
     </select>
 
     <!-- 添加学生 -->
     <insert id="insert">
-        INSERT INTO student(id,name,age)
-        VALUES(#{id},#{name},#{age})
+        INSERT INTO student(id, name, age, class_id)
+        VALUES(#{id}, #{name}, #{age}, #{clazz.id})
     </insert>
 
     <!-- 修改学生 -->
     <update id="update">
         UPDATE student
-        SET name=#{name},
-        age=#{age}
-        WHERE id=#{id}
+        SET name = #{name},
+        age = #{age}
+        WHERE id = #{id}
     </update>
 
     <!-- 删除学生 -->
     <delete id="delete">
         DELETE FROM student
-        WHERE id=#{id}
+        WHERE id = #{id}
     </delete>
 
+    <!-- 动态条件查询学生 -->
     <select id="search"
             resultType="Day13.com.student.entity.Student">
-        SELECT *
+        SELECT id, name, age
         FROM student
         <where>
             <if test="name != null and name != ''">
-                AND name=#{name}
+                AND name = #{name}
             </if>
-
             <if test="age != null">
-                AND age=#{age}
+                AND age = #{age}
             </if>
         </where>
+    </select>
+
+    <!-- 根据学生id查询学生及其班级 -->
+    <select id="findByIdWithClass"
+            resultMap="studentWithClassMap">
+        SELECT s.id,
+        s.name,
+        s.age,
+        c.id AS class_id,
+        c.class_name
+        FROM student s
+        LEFT JOIN `class` c ON s.class_id = c.id
+        WHERE s.id = #{id}
+    </select>
+
+    <!-- 根据班级id查询班级及其所有学生 -->
+    <select id="findClassWithStudents"
+            resultMap="classWithStudentsMap">
+        SELECT c.id AS class_id,
+        c.class_name,
+        s.id AS student_id,
+        s.name AS student_name,
+        s.age AS student_age
+        FROM `class` c
+        LEFT JOIN student s ON c.id = s.class_id
+        WHERE c.id = #{id}
     </select>
 </mapper>

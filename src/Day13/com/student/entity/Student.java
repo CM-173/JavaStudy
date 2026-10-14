@@ -4,6 +4,7 @@ public class Student {
     private String id;
     private String name;
     private int age;
+    private Class clazz;
 
     public Student() {
     }
@@ -45,5 +46,13 @@ public class Student {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 '}';
+    }
+
+    public Class getClazz(){
+        return clazz;
+    }
+
+    public void setClazz(Class clazz){
+        this.clazz=clazz;
     }
 }

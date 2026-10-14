@@ -1,7 +1,9 @@
 package Day13.com.student.mapper;
 
+import Day13.com.student.entity.Class;
 import Day13.com.student.entity.Student;
 import org.apache.ibatis.annotations.Param;
+
 
 import java.util.List;
 
@@ -16,6 +18,10 @@ public interface StudentMapper {
     int update(Student student);
 
     int delete(String id);
+
+    Student findByIdWithClass(String id);
+
+    Class findClassWithStudents(Integer id);
 
     List<Student> search(
             @Param("name") String name,

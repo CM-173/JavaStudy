@@ -62,47 +62,25 @@ public class StudentService {
             Student student1,
             Student student2) throws SQLException {
 
-
         try {
-
             TransactionManager.begin();
 
+            boolean result1 = studentDAO.saveWithTransaction(student1);
 
-            boolean result1 =
-                    studentDAO.saveWithTransaction(student1);
-
-
-            boolean result2 =
-                    studentDAO.saveWithTransaction(student2);
-
-
+            boolean result2 = studentDAO.saveWithTransaction(student2);
 
             if(result1 && result2){
-
                 TransactionManager.commit();
-
                 return true;
-
             }else{
-
                 TransactionManager.rollback();
-
                 return false;
-
             }
-
-
         } catch(Exception e){
-
             TransactionManager.rollback();
-
             return false;
-
-
         } finally {
-
             TransactionManager.close();
-
         }
 
     }
