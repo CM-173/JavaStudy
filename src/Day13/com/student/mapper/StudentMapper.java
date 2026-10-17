@@ -3,6 +3,7 @@ package Day13.com.student.mapper;
 import Day13.com.student.entity.Class;
 import Day13.com.student.entity.Student;
 import org.apache.ibatis.annotations.*;
+import java.util.List;
 
 import java.util.List;
 
@@ -27,6 +28,17 @@ public interface StudentMapper {
     Class findClassWithStudents(Integer id);
 
     List<Student> search(
+            @Param("name") String name,
+            @Param("age") Integer age
+    );
+
+    List<Student> searchByPriority(
+            @Param("id") String id,
+            @Param("name") String name
+    );
+
+    int updateSelective(
+            @Param("id") String id,
             @Param("name") String name,
             @Param("age") Integer age
     );

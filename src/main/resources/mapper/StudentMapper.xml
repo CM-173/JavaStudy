@@ -53,6 +53,36 @@
         </where>
     </select>
 
+    <!-- 按优先级查询学生 -->
+    <select id="searchByPriority"
+            resultType="Day13.com.student.entity.Student">
+        SELECT id, name, age
+        FROM student
+        <where>
+            <choose>
+                <when test="id != null and id != ''">
+                    id = #{id}
+                </when>
+                <when test="name != null and name != ''">
+                    name = #{name}
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <update id="updateSelective">
+        UPDATE student
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
     <!-- 根据学生id查询学生及其班级 -->
     <select id="findByIdWithClass"
             resultMap="studentWithClassMap">

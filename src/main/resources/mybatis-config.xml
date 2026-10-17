@@ -7,7 +7,6 @@
 
 <configuration>
 
-
     <environments default="development">
 
         <environment id="development">

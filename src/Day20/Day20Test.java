@@ -80,9 +80,42 @@ public class Day20Test {
             int deleteResult = mapper.delete("T100");
             System.out.println("删除结果：" + deleteResult);
 
-// 再次查询，验证是否删除成功
+            // 再次查询，验证是否删除成功
             Student deletedStudent = mapper.findById("T100");
             System.out.println("删除后查询结果：" + deletedStudent);
+
+            System.out.println("===== 多条件查询测试 =====");
+
+            List<Student> list = mapper.search("张三", 20);
+
+            System.out.println("查询结果数量：" + list.size());
+
+            for (Student s : list) {
+                System.out.println(s);
+            }
+
+            System.out.println("===== 查询优先级测试 =====");
+
+            // 学号和姓名都传入，验证学号优先
+            List<Student> priorityList =
+                    mapper.searchByPriority("T001", "张三");
+
+            System.out.println("查询结果数量：" + priorityList.size());
+
+            for (Student s : priorityList) {
+                System.out.println(s);
+            }
+
+            System.out.println("===== 动态更新测试 =====");
+
+            int updateCount = mapper.updateSelective("T001", "动态更新测试", null);
+            System.out.println("更新结果：" + updateCount);
+
+            Student updatedStudent = mapper.findById("T001");
+            System.out.println("更新后的学生：" + updatedStudent);
+
+// 提交事务，让更新持久保存到数据库
+            sqlSession.commit();
         } catch (Exception e) {
             System.out.println("测试失败：" + e.getMessage());
             e.printStackTrace();
