@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;*/
 @RestController
 public class HelloController {
 
+    private final StudentService studentService;
+
     public HelloController(StudentService studentService) {
         this.studentService = studentService;
     }
-
-    private final StudentService studentService;
 
     @GetMapping("/hello")
     public String hello() {
@@ -33,12 +33,12 @@ public class HelloController {
 
     @GetMapping("/students")
     public String getStudents() {
-        return "学生列表查询成功";
+        return studentService.getStudents();
     }
 
     @PostMapping("/students")
     public String addStudent(@Valid @RequestBody Student student) {
-        return "新增学生：" + student.getName();
+        return studentService.addStudent(student);
     }
 
     @PutMapping("/students")
