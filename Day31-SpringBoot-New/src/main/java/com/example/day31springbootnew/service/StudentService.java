@@ -1,37 +1,36 @@
 package com.example.day31springbootnew.service;
 
 import com.example.day31springbootnew.entity.Student;
+import com.example.day31springbootnew.mapper.StudentMapper;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 @Service
 public class StudentService {
 
-    private final List<Student> students = new ArrayList<Student>();
+    private final StudentMapper studentMapper;
 
-    public String getStudentName() {
-        return "张三";
+    public StudentService(StudentMapper studentMapper) {
+        this.studentMapper = studentMapper;
     }
 
     public String addStudent(Student student) {
-        for (Student s : students) {
-            if (s.getName().equals(student.getName())) {
-                return "该学生已存在";
-            }
+        Student existing = studentMapper.findByName(student.getName());
+        if (existing != null) {
+            return "该学生已存在";
         }
-        students.add(student);
+        studentMapper.insert(student);
         return "新增学生成功：" + student.getName();
     }
 
     public String getStudents() {
-        if (students.isEmpty()) {
+        List<Student> list = studentMapper.findAll();
+        if (list.isEmpty()) {
             return "学生列表：暂无数据";
         }
         StringBuilder sb = new StringBuilder("学生列表：");
-        for (Student s : students) {
+        for (Student s : list) {
             sb.append(s.getName()).append(", ");
         }
         String result = sb.toString();
@@ -42,11 +41,6 @@ public class StudentService {
     }
 
     public Student findByName(String name) {
-        for (Student s : students) {
-            if (s.getName().equals(name)) {
-                return s;
-            }
-        }
-        return null;
+        return studentMapper.findByName(name);
     }
 }

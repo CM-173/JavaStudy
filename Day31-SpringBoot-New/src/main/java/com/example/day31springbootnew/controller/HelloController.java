@@ -26,11 +26,6 @@ public class HelloController {
         return "你好，Spring Boot！";
     }
 
-    @GetMapping("/name")
-    public String name() {
-        return studentService.getStudentName();
-    }
-
     @GetMapping("/students")
     public String getStudents() {
         return studentService.getStudents();
