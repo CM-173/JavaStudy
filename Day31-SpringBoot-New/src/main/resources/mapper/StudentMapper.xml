@@ -15,4 +15,16 @@
     <insert id="insert">
         INSERT INTO student (name, age) VALUES (#{name}, #{age})
     </insert>
+
+    <select id="findById" resultType="com.example.day31springbootnew.entity.Student">
+        SELECT id, name, age FROM student WHERE id = #{id}
+    </select>
+
+    <update id="update">
+        UPDATE student SET name = #{name}, age = #{age} WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM student WHERE id = #{id}
+    </delete>
 </mapper>

@@ -43,4 +43,27 @@ public class StudentService {
     public Student findByName(String name) {
         return studentMapper.findByName(name);
     }
+
+    public Student findById(Integer id) {
+        return studentMapper.findById(id);
+    }
+
+    public String updateStudent(Integer id, Student student) {
+        Student existing = studentMapper.findById(id);
+        if (existing == null) {
+            return "该学生不存在";
+        }
+        student.setId(id);
+        studentMapper.update(student);
+        return "修改成功";
+    }
+
+    public String deleteStudent(Integer id) {
+        Student student = studentMapper.findById(id);
+        if (student != null) {
+            studentMapper.delete(id);
+            return "删除成功";
+        }
+        return "该学生不存在";
+    }
 }

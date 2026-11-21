@@ -12,4 +12,10 @@ public interface StudentMapper {
     int insert(Student student);
 
     List<Student> findAll();
+
+    Student findById(Integer id);
+
+    int update(Student student);
+
+    int delete(Integer id);
 }
