@@ -43,4 +43,9 @@ public class HelloController {
     public Student selectStudent(@PathVariable Integer id) {
         return studentService.findById(id);
     }
+
+    @PostMapping("/students/with-log")
+    public String addStudentWithLog(@RequestBody Student student) {
+        return studentService.addStudentWithLog(student);
+    }
 }

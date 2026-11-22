@@ -1,18 +1,22 @@
 package com.example.day31springbootnew.service;
 
 import com.example.day31springbootnew.entity.Student;
+import com.example.day31springbootnew.mapper.StudentLogMapper;
 import com.example.day31springbootnew.mapper.StudentMapper;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class StudentService {
 
     private final StudentMapper studentMapper;
+    private final StudentLogMapper studentLogMapper;
 
-    public StudentService(StudentMapper studentMapper) {
+    public StudentService(StudentMapper studentMapper, StudentLogMapper studentLogMapper) {
         this.studentMapper = studentMapper;
+        this.studentLogMapper = studentLogMapper;
     }
 
     public String addStudent(Student student) {
@@ -65,5 +69,12 @@ public class StudentService {
             return "删除成功";
         }
         return "该学生不存在";
+    }
+
+    @Transactional
+    public String addStudentWithLog(Student student) {
+        studentMapper.insert(student);
+        studentLogMapper.insert("新增学生：" + student.getName());
+        return "新增成功并已记录日志";
     }
 }
