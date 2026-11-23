@@ -10,11 +10,11 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
-public class HelloController {
+public class StudentController {
 
     private final StudentService studentService;
 
-    public HelloController(StudentService studentService) {
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
