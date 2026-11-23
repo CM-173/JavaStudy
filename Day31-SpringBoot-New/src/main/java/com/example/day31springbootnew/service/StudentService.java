@@ -1,10 +1,12 @@
 package com.example.day31springbootnew.service;
 
 import com.example.day31springbootnew.entity.Student;
+import com.example.day31springbootnew.exception.BusinessException;
 import com.example.day31springbootnew.mapper.StudentLogMapper;
 import com.example.day31springbootnew.mapper.StudentMapper;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,62 +21,55 @@ public class StudentService {
         this.studentLogMapper = studentLogMapper;
     }
 
-    public String addStudent(Student student) {
+    //增
+    public void addStudent(Student student) {
         Student existing = studentMapper.findByName(student.getName());
         if (existing != null) {
-            return "该学生已存在";
+            throw new BusinessException("该学生已存在");
         }
         studentMapper.insert(student);
-        return "新增学生成功：" + student.getName();
     }
 
-    public String getStudents() {
+    //查
+    public List<Student> getStudents() {
         List<Student> list = studentMapper.findAll();
-        if (list.isEmpty()) {
-            return "学生列表：暂无数据";
+        return list;
+    }
+
+    //改
+    public void updateStudent(Integer id, Student student) {
+        Student existing = studentMapper.findById(id);
+        if (existing == null) {
+            throw new BusinessException("该学生不存在");
         }
-        StringBuilder sb = new StringBuilder("学生列表：");
-        for (Student s : list) {
-            sb.append(s.getName()).append(", ");
+        student.setId(id);
+        studentMapper.update(student);
+    }
+
+    //删
+    public void deleteStudent(Integer id) {
+        Student student = studentMapper.findById(id);
+        if (student == null) {
+            throw new BusinessException("该学生不存在");
         }
-        String result = sb.toString();
-        if (result.endsWith(", ")) {
-            result = result.substring(0, result.length() - 2);
+        studentMapper.delete(id);
+    }
+
+    public Student findById(Integer id) {
+        Student student = studentMapper.findById(id);
+        if (student == null) {
+            throw new BusinessException("该学生不存在");
         }
-        return result;
+        return student;
+    }
+
+    @Transactional
+    public void addStudentWithLog(Student student) {
+        studentMapper.insert(student);
+        studentLogMapper.insert("新增学生：" + student.getName());
     }
 
     public Student findByName(String name) {
         return studentMapper.findByName(name);
-    }
-
-    public Student findById(Integer id) {
-        return studentMapper.findById(id);
-    }
-
-    public String updateStudent(Integer id, Student student) {
-        Student existing = studentMapper.findById(id);
-        if (existing == null) {
-            return "该学生不存在";
-        }
-        student.setId(id);
-        studentMapper.update(student);
-        return "修改成功";
-    }
-
-    public String deleteStudent(Integer id) {
-        Student student = studentMapper.findById(id);
-        if (student != null) {
-            studentMapper.delete(id);
-            return "删除成功";
-        }
-        return "该学生不存在";
-    }
-
-    @Transactional
-    public String addStudentWithLog(Student student) {
-        studentMapper.insert(student);
-        studentLogMapper.insert("新增学生：" + student.getName());
-        return "新增成功并已记录日志";
     }
 }

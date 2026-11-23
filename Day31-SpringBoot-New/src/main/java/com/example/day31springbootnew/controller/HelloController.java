@@ -1,9 +1,13 @@
 package com.example.day31springbootnew.controller;
 
+import com.example.day31springbootnew.common.Result;
 import com.example.day31springbootnew.service.StudentService;
 import org.springframework.web.bind.annotation.*;
 import com.example.day31springbootnew.entity.Student;
+
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 @RestController
 public class HelloController {
@@ -14,38 +18,37 @@ public class HelloController {
         this.studentService = studentService;
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "你好，Spring Boot！";
-    }
-
     @GetMapping("/students")
-    public String getStudents() {
-        return studentService.getStudents();
+    public Result<List<Student>> getStudents() {
+        return Result.success(studentService.getStudents());
     }
 
     @PostMapping("/students")
-    public String addStudent(@Valid @RequestBody Student student) {
-        return studentService.addStudent(student);
+    public Result<Void> addStudent(@Valid @RequestBody Student student) {
+        studentService.addStudent(student);
+        return Result.success(null);
     }
 
     @PutMapping("/students/{id}")
-    public String updateStudent(@PathVariable Integer id, @Valid @RequestBody Student student) {
-        return studentService.updateStudent(id, student);
+    public Result<Void> updateStudent(@PathVariable Integer id, @Valid @RequestBody Student student) {
+        studentService.updateStudent(id, student);
+        return Result.success(null);
     }
 
     @DeleteMapping("/students/{id}")
-    public String deleteStudent(@PathVariable Integer id) {
-        return studentService.deleteStudent(id);
+    public Result<Void> deleteStudent(@PathVariable Integer id) {
+        studentService.deleteStudent(id);
+        return Result.success(null);
     }
 
     @GetMapping("/students/{id}")
-    public Student selectStudent(@PathVariable Integer id) {
-        return studentService.findById(id);
+    public Result<Student> selectStudent(@PathVariable Integer id) {
+        return Result.success(studentService.findById(id));
     }
 
     @PostMapping("/students/with-log")
-    public String addStudentWithLog(@RequestBody Student student) {
-        return studentService.addStudentWithLog(student);
+    public Result<Void> addStudentWithLog(@RequestBody Student student) {
+        studentService.addStudentWithLog(student);
+        return Result.success(null);
     }
 }
