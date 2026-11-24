@@ -2,6 +2,7 @@ package com.example.day31springbootnew.mapper;
 
 import com.example.day31springbootnew.entity.Student;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +19,8 @@ public interface StudentMapper {
     int update(Student student);
 
     int delete(Integer id);
+
+    List<Student> findPage(@Param("offset") Integer offset, @Param("size") Integer size);
+
+    Long count();
 }

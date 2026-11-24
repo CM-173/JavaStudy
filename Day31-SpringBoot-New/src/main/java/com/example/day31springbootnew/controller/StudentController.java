@@ -1,5 +1,6 @@
 package com.example.day31springbootnew.controller;
 
+import com.example.day31springbootnew.common.PageResult;
 import com.example.day31springbootnew.common.Result;
 import com.example.day31springbootnew.service.StudentService;
 import org.springframework.web.bind.annotation.*;
@@ -50,5 +51,12 @@ public class StudentController {
     public Result<Void> addStudentWithLog(@RequestBody Student student) {
         studentService.addStudentWithLog(student);
         return Result.success(null);
+    }
+
+    @GetMapping("/students/page")
+    public Result<PageResult<Student>> getStudentsByPage(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
+        return Result.success(studentService.getStudentsByPage(page, size));
     }
 }

@@ -27,4 +27,12 @@
     <delete id="delete">
         DELETE FROM student WHERE id = #{id}
     </delete>
+
+    <select id="findPage" resultType="com.example.day31springbootnew.entity.Student">
+        SELECT id, name, age FROM student LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="count" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM student
+    </select>
 </mapper>
