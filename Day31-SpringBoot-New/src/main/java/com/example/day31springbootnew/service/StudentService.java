@@ -50,7 +50,7 @@ public class StudentService {
         if (existing == null) {
             throw new BusinessException("该学生不存在");
         }
-        log.info("修改学生：id={}",id);
+        log.info("修改学生：id={}", id);
         student.setId(id);
         studentMapper.update(student);
     }
@@ -62,7 +62,7 @@ public class StudentService {
             log.warn("删除学生失败，学生不存在：id={}", id);
             throw new BusinessException("该学生不存在");
         }
-        log.warn("删除学生：id={}",id);
+        log.warn("删除学生：id={}", id);
         studentMapper.delete(id);
     }
 
@@ -100,7 +100,22 @@ public class StudentService {
         Long total = studentMapper.count();
 
         // 5. 组装返回
-        log.debug("分页查询：page={}, size={}",page,size);
+        log.debug("分页查询：page={}, size={}", page, size);
+        return new PageResult<Student>(total, page, size, list);
+    }
+
+    public PageResult<Student> searchStudents(String name, Integer minAge, Integer maxAge, Integer page, Integer size) {
+        if (page == null || page < 1) page = 1;
+        if (size == null || size < 1) size = 10;
+        if (size > 100) size = 100;
+        int offset = (page - 1) * size;
+
+        log.info("搜索学生：name={}, minAge={}, maxAge={}, page={}, size={}",
+                name, minAge, maxAge, page, size);
+
+        List<Student> list = studentMapper.search(name, minAge, maxAge, offset, size);
+        Long total = studentMapper.countByCondition(name, minAge, maxAge);
+
         return new PageResult<Student>(total, page, size, list);
     }
 }

@@ -59,4 +59,14 @@ public class StudentController {
             @RequestParam(defaultValue = "10") Integer size) {
         return Result.success(studentService.getStudentsByPage(page, size));
     }
+
+    @GetMapping("/students/search")
+    public Result<PageResult<Student>> searchStudents(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer minAge,
+            @RequestParam(required = false) Integer maxAge,
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
+        return Result.success(studentService.searchStudents(name, minAge, maxAge, page, size));
+    }
 }

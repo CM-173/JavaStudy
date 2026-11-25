@@ -23,4 +23,14 @@ public interface StudentMapper {
     List<Student> findPage(@Param("offset") Integer offset, @Param("size") Integer size);
 
     Long count();
+
+    List<Student> search(@Param("name") String name,
+                         @Param("minAge") Integer minAge,
+                         @Param("maxAge") Integer maxAge,
+                         @Param("offset") Integer offset,
+                         @Param("size") Integer size);
+
+    Long countByCondition(@Param("name") String name,
+                          @Param("minAge") Integer minAge,
+                          @Param("maxAge") Integer maxAge);
 }
