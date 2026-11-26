@@ -18,10 +18,15 @@
 ## 功能
 
 - 学生信息增删改查（CRUD）
+- 分页查询
+- 条件搜索（姓名模糊、年龄范围）
+- 班级关联查询（LEFT JOIN）
 - 参数校验（姓名非空、年龄 1-150）
 - 统一返回结构（code / message / data）
 - 全局异常处理（业务异常、校验异常、系统异常）
 - 事务管理（新增学生 + 记录日志）
+- 操作日志记录（SLF4J）
+- 接口文档（SpringDoc OpenAPI）
 
 ## 接口列表
 
@@ -29,6 +34,9 @@
 |---|---|---|
 | GET | /students | 查询所有学生 |
 | GET | /students/{id} | 按 ID 查询 |
+| GET | /students/page | 分页查询 |
+| GET | /students/search | 条件搜索（姓名/年龄范围） |
+| GET | /students/with-class | 查询所有学生（含班级名） |
 | POST | /students | 新增学生 |
 | PUT | /students/{id} | 修改学生 |
 | DELETE | /students/{id} | 删除学生 |
@@ -40,6 +48,15 @@
 2. 修改 `application.properties` 中的数据库密码
 3. 运行 `mvn spring-boot:run`
 4. 访问 `http://localhost:8081/students`
+
+## 接口文档
+
+启动项目后访问 `http://localhost:8081/swagger-ui.html`
+
+可以看到所有接口的详细说明，并直接在页面上测试。
+
+## 建表 SQL
+...
 
 ### 建表 SQL
 
