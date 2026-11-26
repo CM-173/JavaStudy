@@ -118,4 +118,8 @@ public class StudentService {
 
         return new PageResult<Student>(total, page, size, list);
     }
+
+    public List<Student> getStudentsWithClass() {
+        return studentMapper.findAllWithClassName();
+    }
 }

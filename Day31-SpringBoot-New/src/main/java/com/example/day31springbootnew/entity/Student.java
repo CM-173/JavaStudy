@@ -16,6 +16,13 @@ public class Student {
     @Max(value = 150, message = "年龄不能大于150")
     private Integer age;
 
+    private Integer classId;
+
+    private String className;   // 非数据库字段，JOIN 查询时填充
+
+    public String getClassName() { return className; }
+    public void setClassName(String className) { this.className = className; }
+
     public Integer getId() {
         return id;
     }
@@ -38,5 +45,13 @@ public class Student {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public Integer getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Integer classId) {
+        this.classId = classId;
     }
 }

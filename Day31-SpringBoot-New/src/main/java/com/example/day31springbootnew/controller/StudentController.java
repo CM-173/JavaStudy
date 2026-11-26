@@ -80,4 +80,10 @@ public class StudentController {
             @RequestParam(defaultValue = "10") Integer size) {
         return Result.success(studentService.searchStudents(name, minAge, maxAge, page, size));
     }
+
+    @Operation(summary = "查询所有学生（含班级名）")
+    @GetMapping("/students/with-class")
+    public Result<List<Student>> getStudentsWithClass() {
+        return Result.success(studentService.getStudentsWithClass());
+    }
 }

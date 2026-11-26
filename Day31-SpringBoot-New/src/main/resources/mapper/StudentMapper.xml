@@ -60,4 +60,10 @@
         SELECT COUNT(*) FROM student
         <include refid="searchCondition"/>
     </select>
+
+    <select id="findAllWithClassName" resultType="com.example.day31springbootnew.entity.Student">
+        SELECT s.id, s.name, s.age, s.class_id AS classId, c.class_name AS className
+        FROM student s
+                 LEFT JOIN class c ON s.class_id = c.id
+    </select>
 </mapper>

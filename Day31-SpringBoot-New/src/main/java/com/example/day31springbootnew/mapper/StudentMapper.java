@@ -33,4 +33,6 @@ public interface StudentMapper {
     Long countByCondition(@Param("name") String name,
                           @Param("minAge") Integer minAge,
                           @Param("maxAge") Integer maxAge);
+
+    List<Student> findAllWithClassName();
 }
